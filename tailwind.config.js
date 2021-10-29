@@ -21,5 +21,10 @@ module.exports = {
         },
     },
 
-    plugins: [require('@tailwindcss/forms')],
+    plugins: [
+        require('@tailwindcss/ui')({
+            layout: 'sidebar',
+        }),
+        require('@tailwindcss/forms')
+    ],
 };

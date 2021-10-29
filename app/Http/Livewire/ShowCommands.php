@@ -3,18 +3,35 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Repositories\Command\CommandRepository;
 
 class ShowCommands extends Component
 {
     /**
      * @var bool
      */
-    public $is_data_ready = false;
+    protected $is_data_ready = false;
 
     /**
      * @var array
      */
-    private $commands = [];
+    protected $commands;
+
+    /**
+     * @var array
+     */
+    protected $listeners = [
+        'run-command' => 'run',
+    ];
+
+    /**
+     * Initializes the component.
+     */
+    public function mount(): void
+    {
+        $this->is_data_ready = false;
+        $this->commands = [];
+    }
 
     /**
      * Renders the component.
@@ -33,8 +50,9 @@ class ShowCommands extends Component
      */
     public function fetchCommands(): void
     {
-        $this->commands = ['command1', 'command2'];
-        sleep(5);
+        $commandRepository = app()->make(CommandRepository::class);
+        $this->commands = $commandRepository->getCommands();
+        sleep(2);
         $this->markDataAsReady();
     }
 
@@ -72,5 +90,12 @@ class ShowCommands extends Component
     public function getCommands(): array
     {
         return $this->commands;
+    }
+
+    /**
+     *
+     */
+    public function run()
+    {
     }
 }
