@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +21,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::post('/run-command/{id}', [CommandController::class, 'run'])
+    ->middleware(['auth'])
+    ->name('run-command');
 
 require __DIR__.'/auth.php';

@@ -16,6 +16,7 @@ class CreateCommandsTable extends Migration
             $table->string('frequency')->nullable();
             // In case we have a very long command name...
             $table->text('command')->nullable();
+            $table->boolean('is_running')->default(false);
             $table->timestamps();
         });
     }

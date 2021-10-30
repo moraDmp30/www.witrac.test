@@ -17,6 +17,7 @@ class Command extends Model
     protected $fillable = [
         'frequency',
         'command',
+        'is_running',
     ];
 
     /**
@@ -27,5 +28,6 @@ class Command extends Model
     protected $casts = [
         'frequency' => 'string',
         'command' => 'string',
+        'is_running' => 'bool',
     ];
 }

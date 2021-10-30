@@ -18,13 +18,6 @@ class ShowCommands extends Component
     protected $commands;
 
     /**
-     * @var array
-     */
-    protected $listeners = [
-        'run-command' => 'run',
-    ];
-
-    /**
      * Initializes the component.
      */
     public function mount(): void
@@ -52,6 +45,7 @@ class ShowCommands extends Component
     {
         $commandRepository = app()->make(CommandRepository::class);
         $this->commands = $commandRepository->getCommands();
+        // This sleep allows to see spinner...
         sleep(2);
         $this->markDataAsReady();
     }
@@ -90,12 +84,5 @@ class ShowCommands extends Component
     public function getCommands(): array
     {
         return $this->commands;
-    }
-
-    /**
-     *
-     */
-    public function run()
-    {
     }
 }

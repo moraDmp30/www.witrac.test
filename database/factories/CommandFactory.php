@@ -16,6 +16,7 @@ class CommandFactory extends Factory
         return [
             'frequency' => '* * * * *',
             'command' => 'ls',
+            'is_running' => false,
         ];
     }
 }
