@@ -62,4 +62,14 @@ class EloquentCommandRepository implements CommandRepository
 
         return $returnVar;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(int $id): bool
+    {
+        $command = Command::findOrFail($id);
+
+        return $command->delete();
+    }
 }

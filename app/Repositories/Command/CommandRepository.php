@@ -29,6 +29,17 @@ interface CommandRepository
      * Run command.
      *
      * @param int $id Command ID
+     *
+     * @return int
      */
     public function run(int $id): int;
+
+    /**
+     * Delete command.
+     *
+     * @param int $id Command ID
+     *
+     * @return bool
+     */
+    public function delete(int $id): bool;
 }

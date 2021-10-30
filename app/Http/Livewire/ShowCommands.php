@@ -10,12 +10,19 @@ class ShowCommands extends Component
     /**
      * @var bool
      */
-    protected $is_data_ready = false;
+    protected $is_data_ready;
 
     /**
      * @var array
      */
     protected $commands;
+
+    /**
+     * @var array
+     */
+    protected $listeners = [
+        'deleteCommand' => 'delete',
+    ];
 
     /**
      * Initializes the component.
@@ -57,7 +64,7 @@ class ShowCommands extends Component
      */
     public function isDataReady(): bool
     {
-        return $this->is_data_ready;
+        return $this->is_data_ready ? true : false;
     }
 
     /**
@@ -84,5 +91,18 @@ class ShowCommands extends Component
     public function getCommands(): array
     {
         return $this->commands;
+    }
+
+    /**
+     * Deletes a command.
+     *
+     * @param int $id Command ID
+     */
+    public function delete(int $id): void
+    {
+        $this->markDataAsNotReady();
+        $commandRepository = app()->make(CommandRepository::class);
+        $commandRepository->delete($id);
+        $this->fetchCommands();
     }
 }
