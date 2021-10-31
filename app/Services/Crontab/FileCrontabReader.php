@@ -4,6 +4,7 @@ namespace App\Services\Crontab;
 
 use Cron\CronExpression;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class FileCrontabReader implements CrontabReader
 {
@@ -13,27 +14,30 @@ class FileCrontabReader implements CrontabReader
     public function read($params): array
     {
         $result = [];
-        $file = Arr::get($params, 'input', null);
-        $handle = fopen($file->getRealPath(), 'r');
-        if ($handle === false) {
-            logger()->error('Unable to open file');
+        $filePath = Arr::get($params, 'input', null);
+        if (!file_exists($filePath) || ($handle = fopen($filePath, 'r')) === false) {
+            Log::error('Unable to open file.');
 
             return [];
         }
 
+        $numLine = 0;
         while (($line = fgets($handle)) !== false) {
-            $expressionArray = explode(' ', str_replace(["\r", "\n"], '', $line));
+            $line = str_replace(["\r", "\n"], '', $line);
+            $numLine += 1;
+            $expressionArray = explode(' ', $line);
             $cronExpression = implode(' ', array_slice($expressionArray, 0, 5));
             $cronAction = implode(' ', array_slice($expressionArray, 5));
 
             if (empty($cronExpression) || empty($cronAction)) {
-                // Ignore those expressions being empty
+                Log::error('Line #'.$numLine.' "'.$line.'" ignored because expression and/or action are empty.');
+
                 continue;
             }
 
             $cronExpressionObject = new CronExpression($cronExpression);
             if (!$cronExpressionObject->isValid()) {
-                logger()->error('"'.$cronExpression.'" is not valid.');
+                Log::error('Line #'.$numLine.' "'.$line.'" ignored because cron expression is not valid.');
 
                 continue;
             }

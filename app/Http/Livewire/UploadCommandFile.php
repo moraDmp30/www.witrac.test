@@ -53,7 +53,7 @@ class UploadCommandFile extends Component
 
         if ($this->file->isValid()) {
             $reader = app()->make(CrontabReader::class);
-            $commands = $reader->read(['input' => $this->file]);
+            $commands = $reader->read(['input' => $this->file->getRealPath()]);
 
             DB::transaction(function () use ($commands) {
                 $commandRepository = app()->make(CommandRepository::class);
