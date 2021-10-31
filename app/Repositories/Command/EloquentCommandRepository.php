@@ -72,4 +72,20 @@ class EloquentCommandRepository implements CommandRepository
 
         return $command->delete();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteAll(): bool
+    {
+        return Command::query()->delete();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function insert($commands): void
+    {
+        Command::insert($commands);
+    }
 }

@@ -42,4 +42,18 @@ interface CommandRepository
      * @return bool
      */
     public function delete(int $id): bool;
+
+    /**
+     * Delete all existing commands.
+     *
+     * @return bool
+     */
+    public function deleteAll(): bool;
+
+    /**
+     * Insert a bunch of records from the given data.
+     *
+     * @param array $commands
+     */
+    public function insert($commands): void;
 }

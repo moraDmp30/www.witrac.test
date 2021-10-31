@@ -22,6 +22,7 @@ class ShowCommands extends Component
      */
     protected $listeners = [
         'deleteCommand' => 'delete',
+        'commandInserted' => 'reload',
     ];
 
     /**
@@ -103,6 +104,15 @@ class ShowCommands extends Component
         $this->markDataAsNotReady();
         $commandRepository = app()->make(CommandRepository::class);
         $commandRepository->delete($id);
+        $this->fetchCommands();
+    }
+
+    /**
+     * Reload commands.
+     */
+    public function reload(): void
+    {
+        $this->markDataAsNotReady();
         $this->fetchCommands();
     }
 }

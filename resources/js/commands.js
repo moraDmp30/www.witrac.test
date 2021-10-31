@@ -109,3 +109,9 @@ Alpine.store('commands', {
 });
 
 Alpine.start();
+
+window.addEventListener('fileUploaded', event => {
+    document.getElementById('command-file').value = '';
+    Livewire.emit('commandInserted');
+    Alpine.store('toast').showAlert('success', 'File processed successfully!');
+});

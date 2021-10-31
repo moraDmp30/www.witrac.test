@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent="save" class="mb-10">
+    <form wire:submit.prevent="uploadFile" class="mb-10">
         <div class="sm:overflow-hidden">
             <div class="bg-white py-6 space-y-6 sm:py-6">
                 <div>
@@ -12,7 +12,7 @@
                             File
                         </label>
                         <div class="mt-1 relative flex">
-                            <input type="file" wire:model="file" class="focus:ring-indigo-500 focus:border-indigo-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                            <input type="file" id="command-file" wire:model.defer="file" class="focus:ring-indigo-500 focus:border-indigo-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                             @error('file')
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <!-- Heroicon name: solid/exclamation-circle -->
@@ -42,14 +42,14 @@
                     <div class="col-span-3">
                         <div class="relative flex items-start">
                             <div class="flex items-center h-5">
-                                <input wire:model="delete_previous" id="delete-previous" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" value="1">
+                                <input wire:model.defer="delete_previous" id="delete-previous" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" value="1">
                             </div>
                             <div class="ml-3 text-sm">
                                 <label for="delete-previous" class="font-medium text-gray-700">Delete previous</label>
                                 <p class="text-gray-500">By checking this, all existing commands will be removed and replaced by new file.</p>
                                 @error('delete_previous')
-                            <p class="mt-2 text-sm text-red-600" id="delete-previous-error">{{ $message }}</p>
-                        @enderror
+                                    <p class="mt-2 text-sm text-red-600" id="delete-previous-error">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>

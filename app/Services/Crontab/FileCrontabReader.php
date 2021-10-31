@@ -12,6 +12,7 @@ class FileCrontabReader implements CrontabReader
      */
     public function read($params): array
     {
+        $result = [];
         $file = Arr::get($params, 'input', null);
         $handle = fopen($file->getRealPath(), 'r');
         if ($handle === false) {
@@ -24,23 +25,27 @@ class FileCrontabReader implements CrontabReader
             $expressionArray = explode(' ', str_replace(["\r", "\n"], '', $line));
             $cronExpression = implode(' ', array_slice($expressionArray, 0, 5));
             $cronAction = implode(' ', array_slice($expressionArray, 5));
-            logger()->debug($line);
-            logger()->debug($cronExpression);
-            logger()->debug($cronAction);
 
-            // if (empty($cronExpression) || empty($cronAction)) {
-            //     // Ignore those expressions being empty
-            //     continue;
-            // }
-
-            $cronExpression = new CronExpression($cronExpression);
-            if ($cronExpression->isValid()) {
-                logger()->debug('expression valid');
+            if (empty($cronExpression) || empty($cronAction)) {
+                // Ignore those expressions being empty
+                continue;
             }
+
+            $cronExpressionObject = new CronExpression($cronExpression);
+            if (!$cronExpressionObject->isValid()) {
+                logger()->error('"'.$cronExpression.'" is not valid.');
+
+                continue;
+            }
+
+            $result[] = [
+                'frequency' => $cronExpression,
+                'command' => $cronAction,
+            ];
         }
 
         fclose($handle);
 
-        return [];
+        return $result;
     }
 }
